@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.itis.inform</groupId>
-    <artifactId>gwt-client</artifactId>
+    <artifactId>users-gwt-client</artifactId>
     <version>0.1</version>
     <packaging>war</packaging>
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class users implements EntryPoint {
 
-    private static final String SERVICE_ROOT_URL = "http://localhost:8081/users-0.1/";
+    private static final String SERVICE_ROOT_URL = "http://localhost:8081/Department-1.3/";
 
     public void onModuleLoad() {
         Defaults.setServiceRoot(SERVICE_ROOT_URL);

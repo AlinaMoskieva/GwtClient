@@ -5,6 +5,7 @@ import org.fusesource.restygwt.client.RestService;
 import ru.itis.inform.users.models.User;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface UsersClient extends RestService {
 
     @GET
     void getUsers(MethodCallback<List<User>> callback);
+    @POST
+    void addNewUser();
 }
