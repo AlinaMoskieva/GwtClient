@@ -10,6 +10,8 @@ import ru.itis.inform.users.client.api.DocumentClient;
 import ru.itis.inform.users.models.Document;
 import com.google.gwt.user.client.ui.Label;
 
+import java.util.List;
+
 /**
  * Created by Moskieva on 02.05.16.
  */
@@ -30,6 +32,25 @@ public class document implements EntryPoint {
                 Label label = new Label(document.toString());
                 panel.add(label);
                 RootLayoutPanel.get().add(panel);
+            }
+        });
+
+        documentClient.getListOfUserDocuments(new MethodCallback<List<Document>>() {
+            public void onFailure(Method method, Throwable throwable) {
+                Label label = new Label("Error");
+                RootLayoutPanel.get().add(label);
+            }
+
+            public void onSuccess(Method method, List<Document> documents) {
+                VerticalPanel verticalPanel = new VerticalPanel();
+                for(Document document : documents){
+                    Label label = new Label(document.toString());
+                    label.setStyleName("serverResponseLabel");
+                    verticalPanel.add(label);
+                }
+                RootLayoutPanel.get().add(verticalPanel);
+
+
             }
         });
     }
