@@ -14,7 +14,7 @@ public interface UsersClient extends RestService {
 
 
     @GET
-    void getUsers(MethodCallback<List<User>> callback);
+    void getUser(MethodCallback<User> callback);
     @POST
-    void addNewUser();
+    void addUser(MethodCallback<String> callback);
 }

@@ -14,7 +14,7 @@
     <!-- Other module inherits                                      -->
     <inherits name="org.fusesource.restygwt.RestyGWT"/>
     <!-- Specify the app entry point class.                         -->
-    <entry-point class='ru.itis.inform.users.client.document' />
+    <entry-point class='ru.itis.inform.users.client.MainEntryPoint' />
 
     <!-- Specify the paths for translatable code-->
     <source path='client' />
