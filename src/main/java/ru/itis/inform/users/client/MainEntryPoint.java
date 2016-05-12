@@ -17,16 +17,18 @@ import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 import ru.itis.inform.users.client.api.UsersClient;
-import ru.itis.inform.users.models.User;
+import ru.itis.inform.users.models.UserDto;
 
 
 /**
  * Created by Moskieva on 04.05.16.
  */
 public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
-    private static final String SERVICE_ROOT_URL = "http://localhost:8081/Department-1.4/";
+    private static final String SERVICE_ROOT_URL = "http://localhost:8081/Department-1.5/";
     VerticalPanel verticalPanel = new VerticalPanel();
     Label label = new Label();
+    private String token = "";
+    private int countUsers = 21;
 
 
 
@@ -72,7 +74,6 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
     public void addRegistredForm(){
         final FormPanel form = new FormPanel();
-        form.setAction("/signup");
         form.setEncoding(FormPanel.ENCODING_MULTIPART);
         form.setMethod(FormPanel.METHOD_POST);
         form.setHeight("10");
@@ -123,6 +124,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
         form.addSubmitHandler(new FormPanel.SubmitHandler() {
             public void onSubmit(SubmitEvent event) {
+                UserDto userDto = new UserDto();
                 String message="";
                 if (tb.getText().length() == 0 || tb1.getText().length() == 0 ||
                         tb2.getText().length() == 0 || tb3.getText().length() == 0) {
@@ -155,9 +157,14 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
                 UsersClient client = GWT.create(UsersClient.class);
 
+                //TODO
+                userDto.setId(countUsers);
+                userDto.setEmail(tb.getText());
+                userDto.setPassword(tb2.getText());
+                userDto.setUserName(tb1.getText());
+                userDto.setSnils(14234);
 
-
-                client.addUser(new MethodCallback<String>() {
+                client.addUser(userDto, new MethodCallback<String>() {
 
                     public void onFailure(Method method, Throwable throwable) {
                         VerticalPanel panel =  new VerticalPanel();
@@ -167,11 +174,12 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                     }
 
                     public void onSuccess(Method method, String s) {
+                        countUsers++;
                         VerticalPanel panel = new VerticalPanel();
                         Label label = new Label("Ok" + s);
                         panel.add(label);
                         RootLayoutPanel.get().add(panel);
-
+                        token = s;
                     }
 
                 });
@@ -184,6 +192,4 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         RootPanel.get().add(decoratorPanel);
 
     }
-    
-
 }

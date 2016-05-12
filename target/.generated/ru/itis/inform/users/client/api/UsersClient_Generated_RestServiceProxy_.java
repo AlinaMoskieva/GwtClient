@@ -9,7 +9,7 @@ public class UsersClient_Generated_RestServiceProxy_ implements ru.itis.inform.u
   public org.fusesource.restygwt.client.Resource getResource() {
     if (this.resource == null) {
       String serviceRoot = org.fusesource.restygwt.client.Defaults.getServiceRoot();
-      this.resource = new org.fusesource.restygwt.client.Resource(serviceRoot).resolve("/users");
+      this.resource = new org.fusesource.restygwt.client.Resource(serviceRoot).resolve("/signup");
     }
     return this.resource;
   }
@@ -22,17 +22,19 @@ public class UsersClient_Generated_RestServiceProxy_ implements ru.itis.inform.u
   public org.fusesource.restygwt.client.Dispatcher getDispatcher() {
     return this.dispatcher;
   }
-  public void getUsers(org.fusesource.restygwt.client.MethodCallback<java.util.List<ru.itis.inform.users.models.User>> callback) {
+  public void addUser(ru.itis.inform.users.models.UserDto dto, org.fusesource.restygwt.client.MethodCallback<java.lang.String> callback) {
+    final ru.itis.inform.users.models.UserDto final_dto = dto;
     final org.fusesource.restygwt.client.Method __method =
     getResource()
-    .get();
+    .post();
     __method.setDispatcher(this.dispatcher);
     __method.header(org.fusesource.restygwt.client.Resource.HEADER_ACCEPT, org.fusesource.restygwt.client.Resource.CONTENT_TYPE_JSON);
+    __method.json(ru.itis.inform.users.models.UserDto_Generated_JsonEncoderDecoder_.INSTANCE.encode(dto));
     try {
-      __method.send(new org.fusesource.restygwt.client.AbstractRequestCallback<java.util.List<ru.itis.inform.users.models.User>>(__method, callback) {
-        protected java.util.List<ru.itis.inform.users.models.User> parseResult() throws Exception {
+      __method.send(new org.fusesource.restygwt.client.AbstractRequestCallback<java.lang.String>(__method, callback) {
+        protected java.lang.String parseResult() throws Exception {
           try {
-            return org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.toList(com.google.gwt.json.client.JSONParser.parse(__method.getResponse().getText()), ru.itis.inform.users.models.User_Generated_JsonEncoderDecoder_.INSTANCE);
+            return org.fusesource.restygwt.client.AbstractJsonEncoderDecoder.STRING.decode(com.google.gwt.json.client.JSONParser.parse(__method.getResponse().getText()));
           } catch (Throwable __e) {
             throw new org.fusesource.restygwt.client.ResponseFormatException("Response was NOT a valid JSON document", __e);
           }
