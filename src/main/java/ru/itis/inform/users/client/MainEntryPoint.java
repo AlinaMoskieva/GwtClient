@@ -97,16 +97,19 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
         final TextBox tb = new TextBox();
         final Label label = new Label("Email");
+        final Label requirement_to_email = new Label(CONST_REQUIREMENT_TO_EMAIL);
         tb.setWidth("220");
         tb.setName("Email");
 
         final TextBox tb1 = new TextBox();
         final Label label1 = new Label("Name");
+        final Label requirement_to_name = new Label(CONST_REQUIREMENT_TO_USER_NAME);
         tb1.setWidth("220");
         tb1.setName("Name");
 
         final TextBox tb2 = new TextBox();
         final Label label2 = new Label("Password");
+        final Label requirement_to_password = new Label(CONST_REQUIREMENT_TO_PASSWORD);
         tb2.setWidth("220");
         tb2.setName("Password");
 
@@ -117,11 +120,13 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
         final TextBox tb4 = new TextBox();
         final  Label label4 = new Label("Passport data");
+        final Label requirement_to_passport = new Label(CONST_REQUIREMENT_TO_PASSPORT_DATA);
         tb4.setWidth("220");
         tb4.setName("PassportData");
 
         final  TextBox tb5 = new TextBox();
         final Label label5 = new Label("Snils");
+        final Label requirement_to_snils = new Label(CONST_REQUIREMENT_TO_SNILS);
         tb5.setWidth("220");
         tb5.setName("Snils");
 
@@ -132,14 +137,19 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         panel.add(label);
         panel.add(tb);
         panel.add(label1);
+        panel.add(requirement_to_email);
         panel.add(tb1);
         panel.add(label4);
+        panel.add(requirement_to_name);
         panel.add(tb4);
         panel.add(label5);
+        panel.add(requirement_to_passport);
         panel.add(tb5);
         panel.add(label2);
+        panel.add(requirement_to_snils);
         panel.add(tb2);
         panel.add(label3);
+        panel.add(requirement_to_password);
         panel.add(tb3);
 
 
