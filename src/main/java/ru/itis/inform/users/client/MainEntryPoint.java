@@ -31,6 +31,16 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     Label label = new Label();
     private String token = "";
     private int countUsers = 40;
+    private final  String CONST_REQUIREMENT_TO_EMAIL= "Email must be in \"example@gmail.com\" format";
+    private final String CONST_REQUIREMENT_TO_USER_NAME = "Letters and numbers, the length of the user name" +
+            " is not less than 2 and not more than 20";
+    private final  String CONST_REQUIREMENT_TO_PASSWORD = "Letters and numbers, the first letter must be in" +
+            " upper case,  the length of the password is not less than 8 and not more than 20";
+    private final String CONST_REQUIREMENT_TO_PASSPORT_DATA = "Numbers, the length of passport data must be 10 symbols";
+    private final String CONST_REQUIREMENT_TO_SNILS= "Numbers, the length of snils data must be 12 symbols";
+
+
+
 
 
 
@@ -105,6 +115,17 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         tb2.setWidth("220");
         tb2.setName("Сonfirmation");
 
+        final TextBox tb4 = new TextBox();
+        final  Label label4 = new Label("Passport data");
+        tb4.setWidth("220");
+        tb4.setName("PassportData");
+
+        final  TextBox tb5 = new TextBox();
+        final Label label5 = new Label("Snils");
+        tb5.setWidth("220");
+        tb5.setName("Snils");
+
+
         final Label registrationLabel = new Label("Sign up");
 
         panel.add(registrationLabel);
@@ -112,11 +133,16 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         panel.add(tb);
         panel.add(label1);
         panel.add(tb1);
+        panel.add(label4);
+        panel.add(tb4);
+        panel.add(label5);
+        panel.add(tb5);
         panel.add(label2);
         panel.add(tb2);
         panel.add(label3);
         panel.add(tb3);
-        
+
+
 
         panel.add(new Button("Sign up", new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -129,7 +155,8 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                 UserDto userDto = new UserDto();
                 String message="";
                 if (tb.getText().length() == 0 || tb1.getText().length() == 0 ||
-                        tb2.getText().length() == 0 || tb3.getText().length() == 0) {
+                        tb2.getText().length() == 0 || tb3.getText().length() == 0 ||
+                        tb4.getText().length() == 0 || tb5.getText().length() == 0 )  {
 
                     if (tb.getText().length() == 0 ){
                         message += tb.getName() + " ";
@@ -143,52 +170,69 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                     if (tb3.getText().length() == 0){
                         message += tb3.getName() + " ";
                     }
+                    if (tb4.getText().length() == 0){
+                        message += tb4.getName() + " ";
+                    }
+                    if (tb5.getText().length() == 0){
+                        message += tb5.getName() + " ";
+                    }
 
                     Window.alert("The "+ message +" text box must not be empty");
                     event.cancel();
-                } else
+                }   else{
+                        if (! tb2.getText().equals(tb3.getText())) {
+                            Window.alert("Passwords are different");
+                        }
+                    else{
+                        if (!tb.getText().matches("^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$"))
+                            Window.alert("Your email is not valid");
+                    else{
+                        if (!tb1.getText().matches("^[a-zA-Z0-9-_\\.]{1,20}$")){
+                            Window.alert("Your user name is not valid");}
+                        else{
+                            if (!tb4.getText().matches("[0-9]{10}")){
+                                Window.alert("Passport data is not valid.");
+                            }
+                            else{
+                                if(!tb5.getText().matches("[0-9]{12}")){
+                                    Window.alert("Snils data is not valid.");
+                                }
 
-                if (! tb2.getText().equals(tb3.getText())){
-                    Window.alert("Passwords are different");
-                } else
+                    else{
+                        if (!tb2.getText().matches("(?=^.{8,20}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$")){
+                            Window.alert("Your password is not valid.");
+                        }
+                    else {
 
-                if (tb.getText().length() < 3 || tb1.getText().length() < 3 || tb2.getText().length() < 3 ){
-                    Window.alert("Email, name and password must be more than 2 ");
-
-                } else
-                if (!tb.getText().matches("^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$"))
-                    Window.alert("Youre email is not valid");
-                else {
+                        UsersClient client = GWT.create(UsersClient.class);
 
 
-                UsersClient client = GWT.create(UsersClient.class);
+                        userDto.setId(countUsers);
+                        userDto.setEmail(tb.getText());
+                        userDto.setPassword(tb2.getText());
+                        userDto.setUserName(tb1.getText());
+                        userDto.setSnils(14234);
 
+                        client.addUser(userDto, new MethodCallback<String>() {
 
-                userDto.setId(countUsers);
-                userDto.setEmail(tb.getText());
-                userDto.setPassword(tb2.getText());
-                userDto.setUserName(tb1.getText());
-                userDto.setSnils(14234);
+                            public void onFailure(Method method, Throwable throwable) {
+                                VerticalPanel panel = new VerticalPanel();
+                                Label label = new Label("E" + throwable.getMessage());
+                                panel.add(label);
+                                RootPanel.get().add(panel);
+                            }
 
-                client.addUser(userDto, new MethodCallback<String>() {
+                            public void onSuccess(Method method, String s) {
+                                countUsers++;
+                                VerticalPanel panel = new VerticalPanel();
+                                Label label = new Label("Ok" + s);
+                                panel.add(label);
+                                RootLayoutPanel.get().add(panel);
+                                token = s;
+                            }
 
-                    public void onFailure(Method method, Throwable throwable) {
-                        VerticalPanel panel =  new VerticalPanel();
-                        Label label = new Label("E"+ throwable.getMessage());
-                        panel.add(label);
-                        RootPanel.get().add(panel);
-                    }
-
-                    public void onSuccess(Method method, String s) {
-                        countUsers++;
-                        VerticalPanel panel = new VerticalPanel();
-                        Label label = new Label("Ok" + s);
-                        panel.add(label);
-                        RootLayoutPanel.get().add(panel);
-                        token = s;
-                    }
-
-                });}
+                        });
+                    }}}}}}}
             }
         });
 
