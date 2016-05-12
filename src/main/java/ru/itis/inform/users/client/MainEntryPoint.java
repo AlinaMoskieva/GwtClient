@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.RequestBuilder;
@@ -29,6 +31,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     private static final String SERVICE_ROOT_URL = "http://localhost:8081/Department-1.5/";
     VerticalPanel verticalPanel = new VerticalPanel();
     Label label = new Label();
+    TabPanel tabPanel;
     private String token = "";
     private int countUsers = 40;
     private final  String CONST_REQUIREMENT_TO_EMAIL= "Email must be in \"example@gmail.com\" format";
@@ -63,10 +66,14 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
 
         RootPanel.get().add(verticalPanel);
+
+        if (History.getToken().length() == 0) {
+            History.newItem("sign_up");
+        }
         History.addValueChangeHandler(this);
 
         changePage(History.getToken());
-        addRegistredForm();
+        //addRegistredForm();
 
     }
 
@@ -75,14 +82,18 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
     }
     public void changePage(String token) {
-        if (History.getToken().equals("browse")) {
-            label.setText("Here would be some books");
-        } else if (History.getToken().equals("details")) {
-            label.setText("Here would be the user details");
-        } else {
-            label.setText("Welcome page");
-        }
+        if (History.getToken().equals("sign_up")) {
+            addRegistredForm();
+        } else label.setText("Not today");
+
     }
+
+
+
+
+
+
+
 
     public void addRegistredForm(){
         final FormPanel form = new FormPanel();
