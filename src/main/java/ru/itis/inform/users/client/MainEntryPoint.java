@@ -4,6 +4,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.RequestBuilder;
@@ -28,7 +30,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     VerticalPanel verticalPanel = new VerticalPanel();
     Label label = new Label();
     private String token = "";
-    private int countUsers = 21;
+    private int countUsers = 40;
 
 
 
@@ -114,7 +116,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         panel.add(tb2);
         panel.add(label3);
         panel.add(tb3);
-
+        
 
         panel.add(new Button("Sign up", new ClickHandler() {
             public void onClick(ClickEvent event) {
@@ -144,20 +146,24 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
                     Window.alert("The "+ message +" text box must not be empty");
                     event.cancel();
-                }
+                } else
 
                 if (! tb2.getText().equals(tb3.getText())){
                     Window.alert("Passwords are different");
-                }
+                } else
 
                 if (tb.getText().length() < 3 || tb1.getText().length() < 3 || tb2.getText().length() < 3 ){
                     Window.alert("Email, name and password must be more than 2 ");
 
-                }
+                } else
+                if (!tb.getText().matches("^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$"))
+                    Window.alert("Youre email is not valid");
+                else {
+
 
                 UsersClient client = GWT.create(UsersClient.class);
 
-                //TODO
+
                 userDto.setId(countUsers);
                 userDto.setEmail(tb.getText());
                 userDto.setPassword(tb2.getText());
@@ -182,7 +188,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                         token = s;
                     }
 
-                });
+                });}
             }
         });
 
