@@ -33,7 +33,8 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     Label label = new Label();
     TabPanel tabPanel;
     private String token = "";
-    private int countUsers = 40;
+    private int countUsers = 1;
+
     private final  String CONST_REQUIREMENT_TO_EMAIL= "Email must be in \"example@gmail.com\" format";
     private final String CONST_REQUIREMENT_TO_USER_NAME = "Letters and numbers, the length of the user name" +
             " is not less than 2 and not more than 20";
@@ -42,6 +43,11 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     private final String CONST_REQUIREMENT_TO_PASSPORT_DATA = "Numbers, the length of passport data must be 10 symbols";
     private final String CONST_REQUIREMENT_TO_SNILS= "Numbers, the length of snils data must be 12 symbols";
 
+    private final String CONST_HISTORY_TOKEN_SIGN_UP = "sign up";
+    private final String CONST_HISTORY_TOKEN_LISTING_OF_DOCUMENTS = "listing";
+    private final String CONST_HISTORY_TOKEN_ADD_DOCUMENT = "add document";
+    private final String CONST_HISTORY_TOKEN_ADD_PARTICIPANT = "add participant";
+    private final String CONST_HISTORY_TOKEN_LISTING_OF_PARTICIPANTS = "participants listing";
 
 
 
@@ -141,27 +147,53 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         tb5.setWidth("220");
         tb5.setName("Snils");
 
+        final ListBox listBox = new ListBox();
+        Label label6 = new Label("Gender");
+        listBox.addItem("male", "male");
+        listBox.addItem("women", "women");
+
+        final TextBox tb6 = new TextBox();
+        Label label7 = new Label("City");
+        tb5.setWidth("220");
+        tb5.setName("City");
+
+        final TextBox tb7 = new TextBox();
+        Label label8 = new Label("Age");
+        tb5.setWidth("220");
+        tb5.setName("Age");
+
+
 
         final Label registrationLabel = new Label("Sign up");
 
         panel.add(registrationLabel);
         panel.add(label);
+        panel.add(requirement_to_email);
         panel.add(tb);
         panel.add(label1);
-        panel.add(requirement_to_email);
+        panel.add(requirement_to_name);
         panel.add(tb1);
         panel.add(label4);
-        panel.add(requirement_to_name);
+        panel.add(requirement_to_passport);
         panel.add(tb4);
         panel.add(label5);
-        panel.add(requirement_to_passport);
-        panel.add(tb5);
-        panel.add(label2);
         panel.add(requirement_to_snils);
-        panel.add(tb2);
-        panel.add(label3);
+        panel.add(tb5);
+        panel.add(label6);
+        panel.add(listBox);
+        panel.add(label7);
+        panel.add(tb6);
+        panel.add(label8);
+        panel.add(tb7);
+
+        panel.add(label2);
         panel.add(requirement_to_password);
+        panel.add(tb2);
+
+        panel.add(label3);
         panel.add(tb3);
+
+
 
 
 
@@ -177,7 +209,8 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                 String message="";
                 if (tb.getText().length() == 0 || tb1.getText().length() == 0 ||
                         tb2.getText().length() == 0 || tb3.getText().length() == 0 ||
-                        tb4.getText().length() == 0 || tb5.getText().length() == 0 )  {
+                        tb4.getText().length() == 0 || tb5.getText().length() == 0 ||
+                        tb6.getText().length() == 0 || tb7.getText().length() == 0)  {
 
                     if (tb.getText().length() == 0 ){
                         message += tb.getName() + " ";
@@ -197,8 +230,14 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                     if (tb5.getText().length() == 0){
                         message += tb5.getName() + " ";
                     }
+                    if (tb6.getText().length() == 0){
+                        message += tb6.getName() + " ";
+                    }
+                    if (tb7.getText().length() == 0){
+                        message += tb7.getName() + " ";
+                    }
 
-                    Window.alert("The "+ message +" text box must not be empty");
+                    Window.alert("The "+ message +"text box must not be empty");
                     event.cancel();
                 }   else{
                         if (! tb2.getText().equals(tb3.getText())) {
@@ -218,6 +257,13 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                                 if(!tb5.getText().matches("[0-9]{12}")){
                                     Window.alert("Snils data is not valid.");
                                 }
+                                else{
+                                    if (!tb6.getText().matches("^[a-zA-Z]+$")){
+                                        Window.alert("City data is not valid.");
+                                    }
+                                    else{ if(!tb7.getText().matches("[0-9]{1,2}")){
+                                        Window.alert("Age data is not valid.");
+                                    }
 
                     else{
                         if (!tb2.getText().matches("(?=^.{8,20}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$")){
@@ -232,7 +278,12 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                         userDto.setEmail(tb.getText());
                         userDto.setPassword(tb2.getText());
                         userDto.setUserName(tb1.getText());
-                        userDto.setSnils(14234);
+
+                        //userDto.setSnils(tb5.getText());
+                            userDto.setAge(tb7.getText());
+                            userDto.setCity(tb6.getText());
+                            userDto.setPassportData(tb4.getText());
+                           userDto.setGender(listBox.getSelectedValue());
 
                         client.addUser(userDto, new MethodCallback<String>() {
 
@@ -253,7 +304,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                             }
 
                         });
-                    }}}}}}}
+                    }}}}}}}}}
             }
         });
 
