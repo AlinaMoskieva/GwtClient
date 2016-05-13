@@ -20,8 +20,13 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
+import ru.itis.inform.users.client.api.DocumentClient;
 import ru.itis.inform.users.client.api.UsersClient;
+import ru.itis.inform.users.models.DocumentDto;
+import ru.itis.inform.users.models.DocumentsDto;
 import ru.itis.inform.users.models.UserDto;
+
+import java.util.List;
 
 
 /**
@@ -92,11 +97,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
             addRegistredForm();
         } else{
             if (History.getToken().equals(CONST_HISTORY_TOKEN_LISTING_OF_DOCUMENTS)) {
-                Window.alert("Listing of documents");
-                Label label = new Label("Listing");
-                RootPanel.get().clear();
-                RootPanel.get().add(label);
-
+                addListingFormForDocuments();
             }
             else{
                 if (History.getToken().equals(CONST_HISTORY_TOKEN_ADD_DOCUMENT)){
@@ -124,7 +125,30 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
 
 
+    public void addListingFormForDocuments(){
+        DocumentClient d = GWT.create(DocumentClient.class);
 
+        d.getListing(token, new MethodCallback<DocumentsDto>() {
+            public void onFailure(Method method, Throwable throwable) {
+
+            }
+
+            public void onSuccess(Method method, DocumentsDto documentsDto) {
+                RootPanel.get().clear();
+                List<DocumentDto> documents = documentsDto.getDocuments();
+                if (documents.isEmpty()){
+                    Label label = new Label("You haven't got documents");
+                    RootPanel.get().add(label);
+                } else{
+                    for(DocumentDto document: documents){
+                        Label label = new Label(document.toString());
+                        RootPanel.get().add(label);
+                    }
+                }
+            }
+        });
+
+    }
 
 
 

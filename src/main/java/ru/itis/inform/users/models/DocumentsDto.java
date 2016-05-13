@@ -14,6 +14,9 @@ public class DocumentsDto {
         return documents;
     }
 
+    public DocumentsDto() {
+    }
+
     public void setDocuments(DocumentDto document) {
         this.documents.add(document);
     }

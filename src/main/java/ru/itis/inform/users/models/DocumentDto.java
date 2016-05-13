@@ -23,6 +23,9 @@ public class DocumentDto{
     private String fullName; //
     private String date;
 
+    public DocumentDto() {
+    }
+
     public DocumentDto(Document document){
         this.id = document.getId();
         this.userId = document.getUserId();
