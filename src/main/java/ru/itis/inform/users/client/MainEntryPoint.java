@@ -33,7 +33,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     Label label = new Label();
     TabPanel tabPanel;
     private String token = "";
-    private int countUsers = 1;
+    private int countUsers = 3;
 
     private final  String CONST_REQUIREMENT_TO_EMAIL= "Email must be in \"example@gmail.com\" format";
     private final String CONST_REQUIREMENT_TO_USER_NAME = "Letters and numbers, the length of the user name" +
@@ -48,6 +48,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     private final String CONST_HISTORY_TOKEN_ADD_DOCUMENT = "add document";
     private final String CONST_HISTORY_TOKEN_ADD_PARTICIPANT = "add participant";
     private final String CONST_HISTORY_TOKEN_LISTING_OF_PARTICIPANTS = "participants listing";
+    private final String CONST_HISTORY_TOKEN_ERROR_MESSAGE ="error";
 
 
 
@@ -74,24 +75,50 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
         RootPanel.get().add(verticalPanel);
 
         if (History.getToken().length() == 0) {
-            History.newItem("sign_up");
+            History.newItem(CONST_HISTORY_TOKEN_SIGN_UP);
         }
         History.addValueChangeHandler(this);
 
-        changePage(History.getToken());
-        //addRegistredForm();
+        changePage();
 
     }
 
     public void onValueChange(ValueChangeEvent valueChangeEvent) {
-        changePage(History.getToken());
+        changePage();
 
     }
-    public void changePage(String token) {
-        if (History.getToken().equals("sign_up")) {
+    public void changePage() {
+        if (History.getToken().equals(CONST_HISTORY_TOKEN_SIGN_UP)) {
             addRegistredForm();
-        } else label.setText("Not today");
+        } else{
+            if (History.getToken().equals(CONST_HISTORY_TOKEN_LISTING_OF_DOCUMENTS)) {
+                Window.alert("Listing of documents");
+                Label label = new Label("Listing");
+                RootPanel.get().clear();
+                RootPanel.get().add(label);
 
+            }
+            else{
+                if (History.getToken().equals(CONST_HISTORY_TOKEN_ADD_DOCUMENT)){
+
+                }
+                else {
+                    if (History.getToken().equals(CONST_HISTORY_TOKEN_ADD_PARTICIPANT)){
+
+                    }
+                    else{
+                        if (History.getToken().equals(CONST_HISTORY_TOKEN_LISTING_OF_PARTICIPANTS)){
+
+                        }
+                        else{
+                            if (History.getToken().equals(CONST_HISTORY_TOKEN_ERROR_MESSAGE)){
+                                Window.alert("Error :( ");
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -292,6 +319,8 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                                 Label label = new Label("E" + throwable.getMessage());
                                 panel.add(label);
                                 RootPanel.get().add(panel);
+                                History.newItem(CONST_HISTORY_TOKEN_ERROR_MESSAGE);
+                                changePage();
                             }
 
                             public void onSuccess(Method method, String s) {
@@ -301,6 +330,8 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                                 panel.add(label);
                                 RootLayoutPanel.get().add(panel);
                                 token = s;
+                                History.newItem(CONST_HISTORY_TOKEN_LISTING_OF_DOCUMENTS);
+                                changePage();
                             }
 
                         });
