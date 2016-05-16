@@ -90,14 +90,13 @@ public class Forms {
         panel.add(label11);
         panel.add(tb11);
 
-        panel.add(new Button("Sign up", new ClickHandler() {
+        panel.add(new Button("Add new document", new ClickHandler() {
             public void onClick(ClickEvent event) {
                 form.submit();
             }
         }));
         form.addSubmitHandler(new FormPanel.SubmitHandler() {
             public void onSubmit(FormPanel.SubmitEvent event) {
-                UserDto userDto = new UserDto();
                 String message="";
                 if (tb.getText().length() == 0 || tb1.getText().length() == 0 ||
                         tb2.getText().length() == 0 || tb3.getText().length() == 0 ||
@@ -106,6 +105,15 @@ public class Forms {
                         tb8.getText().length() == 0 || tb9.getText().length() == 0 ||
                         tb10.getText().length() == 0 || tb11.getText().length() == 0)  {
 
+                    if (tb5.getText().length() == 0){
+                        message += tb5.getName() + " ";
+                    }
+                    if (tb6.getText().length() == 0){
+                        message += tb6.getName() + " ";
+                    }
+                    if (tb7.getText().length() == 0){
+                        message += tb7.getName() + " ";
+                    }
                     if (tb.getText().length() == 0 ){
                         message += tb.getName() + " ";
                     }
@@ -120,15 +128,6 @@ public class Forms {
                     }
                     if (tb4.getText().length() == 0){
                         message += tb4.getName() + " ";
-                    }
-                    if (tb5.getText().length() == 0){
-                        message += tb5.getName() + " ";
-                    }
-                    if (tb6.getText().length() == 0){
-                        message += tb6.getName() + " ";
-                    }
-                    if (tb7.getText().length() == 0){
-                        message += tb7.getName() + " ";
                     }
                     if (tb8.getText().length() == 0){
                         message += tb8.getName() + " ";
@@ -153,6 +152,76 @@ public class Forms {
         decoratorPanel.getStylePrimaryName();
         decoratorPanel.add(form);
         RootPanel.get().add(decoratorPanel);
+
+    }
+
+    public void addFormForAddingParticipantToDocument(){
+        Label label = new Label("Full name");
+        final TextBox textBox = new TextBox();
+        textBox.setName("Full Name");
+
+        Label label1 = new Label("Education");
+        final TextBox textBox1 = new TextBox();
+        textBox1.setName("Education");
+
+        Label label2 = new Label("Place Of Work");
+        final TextBox textBox2 = new TextBox();
+        textBox2.setName("Place Of Work");
+
+        Label label3 = new Label("Position At Work");
+        final  TextBox textBox3 = new TextBox();
+        textBox3.setName("Position At Work");
+
+        final FormPanel form = new FormPanel();
+        form.setEncoding(FormPanel.ENCODING_MULTIPART);
+        form.setMethod(FormPanel.METHOD_POST);
+        form.setHeight("10");
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.setSpacing(10);
+        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        form.setWidget(panel);
+
+        panel.add(label);
+        panel.add(textBox);
+        panel.add(label1);
+        panel.add(textBox1);
+        panel.add(label2);
+        panel.add(textBox2);
+        panel.add(label3);
+        panel.add(textBox3);
+
+        panel.add(new Button("Add participant to document", new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                form.submit();
+            }
+        }));
+
+        form.addSubmitHandler(new FormPanel.SubmitHandler() {
+            public void onSubmit(FormPanel.SubmitEvent event) {
+                String message="";
+                if (textBox.getText().length() == 0 || textBox1.getText().length() == 0 ||
+                        textBox2.getText().length() == 0 || textBox3.getText().length() == 0 ){
+
+                    if (textBox.getText().length() == 0 ){
+                        message += textBox.getName() + " ";
+                    }
+                    if (textBox1.getText().length() == 0){
+                        message += textBox1.getName() + " ";
+                    }
+                    if (textBox2.getText().length() == 0){
+                        message += textBox2.getName() + " ";
+                    }
+                    if (textBox3.getText().length() == 0){
+                        message += textBox3.getName() + " ";
+                    }
+                    Window.alert("The "+ message +"text box must not be empty");
+                    event.cancel();
+                }
+            }
+        });
+
+
 
     }
 }
