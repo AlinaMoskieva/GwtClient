@@ -4,23 +4,16 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
-import ru.itis.inform.users.client.api.DocumentClient;
 import ru.itis.inform.users.client.api.UsersClient;
 import ru.itis.inform.users.models.DocumentDto;
 import ru.itis.inform.users.models.DocumentsDto;
@@ -39,6 +32,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
     TabPanel tabPanel;
     private String token = "";
     private int countUsers = 3;
+   // private  UsersClient client;
 
     private final  String CONST_REQUIREMENT_TO_EMAIL= "Email must be in \"example@gmail.com\" format";
     private final String CONST_REQUIREMENT_TO_USER_NAME = "Letters and numbers, the length of the user name" +
@@ -97,7 +91,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
             addRegistredForm();
         } else{
             if (History.getToken().equals(CONST_HISTORY_TOKEN_LISTING_OF_DOCUMENTS)) {
-                addListingFormForDocuments();
+               // addListingFormForDocuments();
             }
             else{
                 if (History.getToken().equals(CONST_HISTORY_TOKEN_ADD_DOCUMENT)){
@@ -124,11 +118,11 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
 
 
 
-
+/*
     public void addListingFormForDocuments(){
-        DocumentClient d = GWT.create(DocumentClient.class);
 
-        d.getListing(token, new MethodCallback<DocumentsDto>() {
+
+        client.getListing(token, new MethodCallback<DocumentsDto>() {
             public void onFailure(Method method, Throwable throwable) {
 
             }
@@ -148,8 +142,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
             }
         });
 
-    }
-
+    }*/
 
 
     public void addRegistredForm(){
@@ -321,8 +314,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                             Window.alert("Your password is not valid.");
                         }
                     else {
-
-                        UsersClient client = GWT.create(UsersClient.class);
+                            UsersClient  client = GWT.create(UsersClient.class);
 
 
                         userDto.setId(countUsers);
@@ -336,7 +328,7 @@ public class MainEntryPoint implements EntryPoint, ValueChangeHandler {
                             userDto.setPassportData(tb4.getText());
                            userDto.setGender(listBox.getSelectedValue());
 
-                        client.addUser(userDto, new MethodCallback<String>() {
+                       client.addUser(userDto, new MethodCallback<String>() {
 
                             public void onFailure(Method method, Throwable throwable) {
                                 VerticalPanel panel = new VerticalPanel();
